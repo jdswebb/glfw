@@ -570,7 +570,7 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg,
 
             case WM_ACTIVATE:
             {
-                if (_glfw.hints.window.titlebar)
+                if ((window && window->titlebar) || _glfw.hints.window.titlebar)
                     break;
 
 				RECT title_bar_rect = {0};
@@ -1008,11 +1008,11 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg,
 
 		case  WM_NCCALCSIZE:
 		{
-			if (_glfw.hints.window.titlebar || !hasThickFrame || !wParam)
+			if (window->titlebar || !hasThickFrame || !wParam)
 				break;
 
-			const int frame_x = 2.0f * GetSystemMetrics(SM_CXFRAME);
-			const int frame_y = 2.0f * GetSystemMetrics(SM_CYFRAME);
+			const int frame_x = (int)(2.0f * GetSystemMetrics(SM_CXFRAME));
+			const int frame_y = (int)(2.0f * GetSystemMetrics(SM_CYFRAME));
 
 			NCCALCSIZE_PARAMS* params = (NCCALCSIZE_PARAMS*)lParam;
 			RECT* requested_client_rect = params->rgrc;
@@ -1020,7 +1020,7 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg,
 			requested_client_rect->right -= frame_x;
 			requested_client_rect->left += frame_x;
 			requested_client_rect->bottom -= frame_y;
-			requested_client_rect->top += window->win32.maximized ? frame_y : 0.0f;
+			requested_client_rect->top += (LONG)(window->win32.maximized ? frame_y : 0.0f);
 
 			return 0;
 		}
@@ -1282,7 +1282,7 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg,
 
         case WM_ACTIVATE:
         {
-            if (_glfw.hints.window.titlebar)
+            if (window->titlebar)
                 break;
 
 			RECT title_bar_rect = { 0 };
@@ -1291,7 +1291,7 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg,
         }
         case WM_NCHITTEST:
         {
-            if (_glfw.hints.window.titlebar)
+            if (window->titlebar)
                 break;
 
 			if (hasThickFrame)
@@ -1304,7 +1304,7 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg,
 					RECT rc;
 					GetClientRect(hWnd, &rc);
 
-					int frame_y = 2.0f * GetSystemMetrics(SM_CYFRAME);
+					int frame_y = (int)(2.0f * GetSystemMetrics(SM_CYFRAME));
 
 					enum { left = 1, top = 2, right = 4, bottom = 8 };
 					int hit = 0;
