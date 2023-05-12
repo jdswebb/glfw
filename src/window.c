@@ -208,6 +208,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
     window->monitor          = (_GLFWmonitor*) monitor;
     window->resizable        = wndconfig.resizable;
     window->decorated        = wndconfig.decorated;
+    window->titlebar         = wndconfig.titlebar;
     window->autoIconify      = wndconfig.autoIconify;
     window->floating         = wndconfig.floating;
     window->focusOnShow      = wndconfig.focusOnShow;
